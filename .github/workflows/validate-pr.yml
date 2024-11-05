@@ -9,6 +9,7 @@ permissions:
   pull-requests: write
 
 env:
+  # https://cbea.ms/git-commit/#limit-50
   MAX_PR_TITLE_LENGTH: 50
 
 jobs:
@@ -35,12 +36,15 @@ jobs:
 
       - name: PR title should start with emoji
         uses: actions/github-script@v7
+        if: always()
         with:
           script: |
             const prTitle = "${{ steps.pr.outputs.title }}";
             const comments = ${{ steps.pr.outputs.comments }};
 
-            // Define regex pattern directly in the script
+            // Match either:
+            // 1. Unicode emoji at start (using Unicode properties)
+            // 2. GitHub emoji shortcode format (e.g. :fire:)
             const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)/u;
 
             // Find our bot's validation comment if it exists
@@ -73,14 +77,17 @@ jobs:
 
       - name: PR title should not exceed ${{ env.MAX_PR_TITLE_LENGTH }} characters
         uses: actions/github-script@v7
+        if: always()
         with:
           script: |
             const prTitle = "${{ steps.pr.outputs.title }}";
             const comments = ${{ steps.pr.outputs.comments }};
             const MAX_LENGTH = ${{ env.MAX_PR_TITLE_LENGTH }};
 
-            // Define regex pattern directly in the script
-            const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)\s*/u;
+            // Match either:
+            // 1. Unicode emoji at start (using Unicode properties)
+            // 2. GitHub emoji shortcode format (e.g. :fire:)
+            const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)/u;
 
             // Remove emoji prefix and its trailing space for length check
             const titleWithoutEmoji = prTitle.replace(emojiRegex, '');
