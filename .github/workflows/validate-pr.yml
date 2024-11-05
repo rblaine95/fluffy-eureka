@@ -10,10 +10,6 @@ permissions:
 
 env:
   MAX_PR_TITLE_LENGTH: 72
-  # Match either:
-  # 1. Unicode emoji at start (using Unicode properties, e.g: 🔥)
-  # 2. GitHub emoji shortcode format (e.g. :fire:)
-  EMOJI_REGEX: '^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)'
 
 jobs:
   validate-pr-title:
@@ -44,7 +40,8 @@ jobs:
             const prTitle = '${{ steps.pr.outputs.title }}';
             const comments = ${{ steps.pr.outputs.comments }};
 
-            const emojiRegex = new RegExp('${{ env.EMOJI_REGEX }}', 'u');
+            // Define regex pattern directly in the script
+            const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)/u;
 
             // Find our bot's validation comment if it exists
             const botComment = comments.find(comment =>
@@ -82,8 +79,11 @@ jobs:
             const comments = ${{ steps.pr.outputs.comments }};
             const MAX_LENGTH = ${{ env.MAX_PR_TITLE_LENGTH }};
 
+            // Define regex pattern directly in the script
+            const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)\s*/u;
+
             // Remove emoji prefix and its trailing space for length check
-            const titleWithoutEmoji = prTitle.replace(new RegExp('${{ env.EMOJI_REGEX }}\\s*', 'u'), '');
+            const titleWithoutEmoji = prTitle.replace(emojiRegex, '');
 
             // Find our bot's validation comment if it exists
             const botComment = comments.find(comment =>
