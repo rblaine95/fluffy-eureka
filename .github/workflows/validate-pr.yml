@@ -70,7 +70,7 @@ jobs:
                   owner: context.repo.owner,
                   repo: context.repo.repo,
                   issue_number: context.issue.number,
-                  body: `⚠️ Your PR title should start with an emoji!\n\nExample valid titles:\n- ✨ Add new feature (or :sparkles: Add new feature)\n- 🐛 Fix login bug (or :bug: Fix login bug)\n- 📝 Update documentation (or :memo: Update documentation)\n\n- To view all valid emojis, check out [gitmoji.dev](https://gitmoji.dev) for a comprehensive list of Git-friendly emojis!\n\nPlease update your PR title and try again.`
+                  body: `⚠️ Your PR title should start with an emoji!\n\nExample valid titles:\n- ✨ Add new feature (or :sparkles: Add new feature)\n- 🐛 Fix login bug (or :bug: Fix login bug)\n- 📝 Update documentation (or :memo: Update documentation)\n\nTo view all valid emojis, check out [gitmoji.dev](https://gitmoji.dev) for a comprehensive list of Git-friendly emojis!\n\nPlease update your PR title and try again.`
                 });
               }
 
