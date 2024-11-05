@@ -1,0 +1,56 @@
+name: Validate PR Titles
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  must-start-with-emoji:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get PR Title
+        id: pr
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const title = context.payload.pull_request.title;
+            core.setOutput('title', title);
+
+      - name: PR title must start with emoji
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prTitle = '${{ steps.pr.outputs.title }}';
+            const emojiRegex = /^[\p{Emoji_Presentation}\p{Extended_Pictographic}]/u;
+
+            if (!emojiRegex.test(prTitle)) {
+              // First check for existing bot comments
+              const comments = await github.rest.issues.listComments({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: context.issue.number
+              });
+
+              // Check if we already left a validation comment
+              const botComment = comments.data.find(comment =>
+                comment.user.type === 'Bot' &&
+                comment.body.includes('Your PR title must start with an emoji!')
+              );
+
+              // Only add a comment if we haven't already
+              if (!botComment) {
+                await github.rest.issues.createComment({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  issue_number: context.issue.number,
+                  body: `⚠️ Your PR title must start with an emoji!\n\nExample valid titles:\n- ✨ Add new feature\n- 🐛 Fix login bug\n- 📚 Update documentation\n\nPlease update your PR title and try again.`
+                });
+              }
+
+              // Always fail the check if no emoji
+              core.setFailed(`PR title must start with an emoji! Current title: "${prTitle}"`);
+            }
