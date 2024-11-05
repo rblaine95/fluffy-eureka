@@ -37,7 +37,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const prTitle = '${{ steps.pr.outputs.title }}';
+            const prTitle = "${{ steps.pr.outputs.title }}";
             const comments = ${{ steps.pr.outputs.comments }};
 
             // Define regex pattern directly in the script
@@ -75,7 +75,7 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
-            const prTitle = '${{ steps.pr.outputs.title }}';
+            const prTitle = "${{ steps.pr.outputs.title }}";
             const comments = ${{ steps.pr.outputs.comments }};
             const MAX_LENGTH = ${{ env.MAX_PR_TITLE_LENGTH }};
 
