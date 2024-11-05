@@ -9,7 +9,7 @@ permissions:
   pull-requests: write
 
 env:
-  MAX_PR_TITLE_LENGTH: 72
+  MAX_PR_TITLE_LENGTH: 50
 
 jobs:
   validate-pr-title:
