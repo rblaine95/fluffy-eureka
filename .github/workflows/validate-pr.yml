@@ -23,6 +23,7 @@ jobs:
           script: |
             // Get PR Title
             const title = context.payload.pull_request.title;
+            core.setOutput('title', title);
 
             // Get PR Comments
             const comments = await github.rest.issues.listComments({
@@ -30,9 +31,17 @@ jobs:
               repo: context.repo.repo,
               issue_number: context.issue.number
               });
-
-            core.setOutput('title', title);
             core.setOutput('comments', comments.data);
+
+            // Get JSON of valid Gitmojis
+            const gitmojiResponse = await github.request('GET /repos/{owner}/{repo}/contents/{path}', {
+              owner: 'carloscuesta',
+              repo: 'gitmoji',
+              path: 'packages/gitmojis/src/gitmojis.json'
+            });
+
+            const gitmojis = JSON.parse(Buffer.from(gitmojiResponse.data.content, 'base64').toString()).gitmojis;
+            core.setOutput('gitmojis', gitmojis);
 
       - name: PR title should start with emoji
         uses: actions/github-script@v7
@@ -41,11 +50,12 @@ jobs:
           script: |
             const prTitle = "${{ steps.pr.outputs.title }}";
             const comments = ${{ steps.pr.outputs.comments }};
+            const gitmojis = ${{ steps.pr.outputs.gitmojis }};
+            const validEmojis = gitmojis.map(g => [g.emoji, g.code]);
 
-            // Match either:
-            // 1. Unicode emoji at start (using Unicode properties)
-            // 2. GitHub emoji shortcode format (e.g. :fire:)
-            const emojiRegex = /^(?:[\p{Emoji_Presentation}\p{Extended_Pictographic}]|:[a-z0-9_+-]+:)/u;
+            const titleStartsWithValidEmoji = validEmojis.some(([emoji, code]) =>
+              prTitle.startsWith(emoji) || prTitle.startsWith(code)
+            );
 
             // Find our bot's validation comment if it exists
             const botComment = comments.find(comment =>
@@ -53,7 +63,7 @@ jobs:
               comment.body.includes('Your PR title should start with an emoji!')
             );
 
-            if (!emojiRegex.test(prTitle)) {
+            if (!titleStartsWithValidEmoji) {
               // Only add a comment if we haven't already
               if (!botComment) {
                 await github.rest.issues.createComment({
