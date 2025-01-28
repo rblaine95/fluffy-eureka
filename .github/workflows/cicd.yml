@@ -1,0 +1,33 @@
+name: CICD
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - master
+    tags:
+      - "v*"
+    paths:
+      - "**"
+      - "!docs/**" # Ignore changes in the docs folder
+      - "!**.md" # Ignore changes to any markdown file
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - reopened
+      - synchronize
+      - ready_for_review
+    paths:
+      - "**"
+      - "!docs/**" # Ignore changes in the docs folder
+      - "!**.md" # Ignore changes to any markdown file
+
+jobs:
+  run:
+    name: Run
+    runs-on: ubuntu-latest
+
+    steps:
+      - run: echo "I ran"
