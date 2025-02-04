@@ -1,0 +1,37 @@
+name: A cool action
+description: A really awesome action that has a lot of steps
+
+inputs: {}
+
+runs:
+  using: composite
+
+  steps:
+
+    - name: Step 1
+      run: echo "Hello, world!"
+      shell: bash
+
+    - name: Step 2
+      run: echo "This is a really cool action!"
+      shell: bash
+
+    - name: Step 3
+      run: echo "I hope you enjoy it!"
+      shell: bash
+
+    - name: Step 4
+      run: echo "Goodbye!"
+      shell: bash
+
+    - name: Step 5
+      run: echo "This is the last step!"
+      shell: bash
+
+    - name: Step 6
+      run: echo "I hope you enjoyed this action!"
+      shell: bash
+
+    - name: Step 7
+      run: echo "Goodbye!"
+      shell: bash

@@ -30,4 +30,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - run: echo "I ran"
+
+      - uses: ./.github/actions/cool
