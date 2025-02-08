@@ -23,6 +23,8 @@ on:
       - "**"
       - "!docs/**" # Ignore changes in the docs folder
       - "!**.md" # Ignore changes to any markdown file
+  release:
+    types: [published]
 
 jobs:
   run:
@@ -35,3 +37,6 @@ jobs:
       - run: echo "I ran"
 
       - uses: ./.github/actions/cool
+
+      - name: Debug
+        run: echo '${{ toJSON(github.event) }}'
