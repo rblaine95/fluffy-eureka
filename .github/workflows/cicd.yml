@@ -2,6 +2,13 @@ name: CICD
 
 on:
   workflow_dispatch:
+  workflow_call:
+    inputs:
+      foo:
+        description: An input
+        required: false
+        type: string
+        default: hoohooheehee
   push:
     branches:
       - master
