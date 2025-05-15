@@ -80,8 +80,8 @@ jobs:
           echo "default-true=${DEFAULT_TRUE}" >> $GITHUB_OUTPUT
           echo "default-false=${DEFAULT_FALSE}" >> $GITHUB_OUTPUT
         env:
-          DEFAULT_TRUE: ${{ github.event.inputs.default-true || true }}
-          DEFAULT_FALSE: ${{ github.event.inputs.default-false || false }}
+          DEFAULT_TRUE: ${{ github.event.inputs.default-true || 'true' }}
+          DEFAULT_FALSE: ${{ github.event.inputs.default-false || 'false' }}
 
   call:
     name: Call me
@@ -89,5 +89,7 @@ jobs:
     needs: cast
     with:
       foo: ${{ github.event.inputs.foo || 'foo' }}
+      # Must be Boolean
       default-true: ${{ needs.cast.outputs.default-true == 'true' || true }}
+      # Must be Boolean
       default-false: ${{ needs.cast.outputs.default-false == 'true' || false }}
