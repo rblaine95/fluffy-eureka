@@ -1,0 +1,46 @@
+name: Call me
+
+on:
+  workflow_dispatch:
+    inputs:
+      foo:
+        description: An input
+        required: false
+        type: string
+        default: hahaheehee
+      a-bool:
+        description: A boolean input
+        required: false
+        type: boolean
+        default: true
+  workflow_call:
+    inputs:
+      foo:
+        description: An input
+        required: false
+        type: string
+        default: hoohooheehee
+      a-bool:
+        description: A boolean input
+        required: false
+        type: boolean
+        default: true
+
+jobs:
+  call:
+    name: Call me
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: echo "I ran"
+
+      - name: Debug
+        run: echo '${{ toJSON(github.event) }}'
+
+      - name: Another debug
+        run: echo '${{ toJSON(github) }}'
+
+      - name: Another another debug
+        run: echo '${{ toJSON(inputs) }}'

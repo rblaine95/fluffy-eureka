@@ -8,13 +8,11 @@ on:
         required: false
         type: string
         default: hahaheehee
-  workflow_call:
-    inputs:
-      foo:
-        description: An input
+      a-bool:
+        description: A boolean input
         required: false
-        type: string
-        default: hoohooheehee
+        type: boolean
+        default: true
   push:
     branches:
       - master
@@ -56,3 +54,13 @@ jobs:
 
       - name: Another debug
         run: echo '${{ toJSON(github) }}'
+
+      - name: Another another debug
+        run: echo '${{ toJSON(inputs) }}'
+
+  call:
+    name: Call me
+    uses: ./.github/workflows/call.yml
+    with:
+      foo: ${{ github.event.inputs.foo || 'foo' }}
+      a-bool: ${{ github.event.inputs.a-bool || true }}
