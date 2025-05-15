@@ -56,13 +56,13 @@ jobs:
 
       - uses: ./.github/actions/cool
 
-      - name: Debug
-        run: echo '${{ toJSON(github.event) }}'
-
-      - name: Another debug
+      - name: Github
         run: echo '${{ toJSON(github) }}'
 
-      - name: Another another debug
+      - name: Github Event
+        run: echo '${{ toJSON(github.event) }}'
+
+      - name: Inputs
         run: echo '${{ toJSON(inputs) }}'
 
   call:
