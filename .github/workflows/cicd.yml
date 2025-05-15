@@ -90,6 +90,6 @@ jobs:
     with:
       foo: ${{ github.event.inputs.foo || 'foo' }}
       # Must be Boolean
-      default-true: ${{ needs.cast.outputs.default-true == 'true' || true }}
+      default-true: ${{ needs.cast.outputs.default-true == 'true' }}
       # Must be Boolean
-      default-false: ${{ needs.cast.outputs.default-false == 'true' || false }}
+      default-false: ${{ needs.cast.outputs.default-false == 'true' }}
