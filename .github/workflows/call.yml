@@ -8,11 +8,16 @@ on:
         required: false
         type: string
         default: hahaheehee
-      a-bool:
-        description: A boolean input
+      default-true:
+        description: A boolean input (default true)
         required: false
         type: boolean
         default: true
+      default-false:
+        description: A boolean input (default false)
+        required: false
+        type: boolean
+        default: false
   workflow_call:
     inputs:
       foo:
@@ -20,11 +25,16 @@ on:
         required: false
         type: string
         default: hoohooheehee
-      a-bool:
-        description: A boolean input
+      default-true:
+        description: A boolean input (default true)
         required: false
         type: boolean
         default: true
+      default-false:
+        description: A boolean input (default false)
+        required: false
+        type: boolean
+        default: false
 
 jobs:
   call:

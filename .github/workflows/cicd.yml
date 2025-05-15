@@ -8,11 +8,16 @@ on:
         required: false
         type: string
         default: hahaheehee
-      a-bool:
-        description: A boolean input
+      default-true:
+        description: A boolean input (default true)
         required: false
         type: boolean
         default: true
+      default-false:
+        description: A boolean input (default false)
+        required: false
+        type: boolean
+        default: false
   push:
     branches:
       - master
@@ -63,4 +68,5 @@ jobs:
     uses: ./.github/workflows/call.yml
     with:
       foo: ${{ github.event.inputs.foo || 'foo' }}
-      a-bool: ${{ github.event.inputs.a-bool == 'true' || false }}
+      default-true: ${{ github.event.inputs.default-true == 'true' || true }}
+      default-false: ${{ github.event.inputs.default-false == 'true' || false }}
