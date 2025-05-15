@@ -65,10 +65,29 @@ jobs:
       - name: Inputs
         run: echo '${{ toJSON(inputs) }}'
 
+  cast:
+    name: Cast booleans
+    runs-on: ubuntu-latest
+
+    outputs:
+      default-true: ${{ steps.cast.outputs.default-true }}
+      default-false: ${{ steps.cast.outputs.default-false }}
+
+    steps:
+      - name: Cast booleans
+        id: cast
+        run: |
+          echo "default-true=${DEFAULT_TRUE}" >> $GITHUB_OUTPUT
+          echo "default-false=${DEFAULT_FALSE}" >> $GITHUB_OUTPUT
+        env:
+          DEFAULT_TRUE: ${{ github.event.inputs.default-true || true }}
+          DEFAULT_FALSE: ${{ github.event.inputs.default-false || false }}
+
   call:
     name: Call me
     uses: ./.github/workflows/call.yml
+    needs: cast
     with:
       foo: ${{ github.event.inputs.foo || 'foo' }}
-      default-true: ${{ github.event.inputs.default-true == 'true' || true }}
-      default-false: ${{ github.event.inputs.default-false == 'true' || false }}
+      default-true: ${{ needs.cast.outputs.default-true == 'true' || true }}
+      default-false: ${{ needs.cast.outputs.default-false == 'true' || false }}
