@@ -63,4 +63,4 @@ jobs:
     uses: ./.github/workflows/call.yml
     with:
       foo: ${{ github.event.inputs.foo || 'foo' }}
-      a-bool: ${{ github.event.inputs.a-bool || true }}
+      a-bool: ${{ github.event.inputs.a-bool == 'true' || false }}
