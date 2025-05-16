@@ -48,6 +48,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - run: env
+        shell: bash
+
       - uses: actions/checkout@v4
         with:
           persist-credentials: false
