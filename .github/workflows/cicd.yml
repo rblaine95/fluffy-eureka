@@ -41,7 +41,7 @@ on:
       - "!**.md" # Ignore changes to any markdown file
   release:
     types:
-      - published
+      - prereleased
       - released
 
 jobs:
