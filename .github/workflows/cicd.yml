@@ -49,6 +49,13 @@ jobs:
     name: Run
     runs-on: ubuntu-latest
 
+    # Skip workflow for releases that are neither pre-release nor latest
+    if: >-
+      github.event_name != 'release' ||
+      github.event.release.prerelease == true ||
+      github.event.action == 'released' ||
+      (github.event.action == 'published' && github.event.release.prerelease == false)
+
     steps:
       - run: env
         shell: bash
@@ -73,6 +80,13 @@ jobs:
   cast:
     name: Cast booleans
     runs-on: ubuntu-latest
+
+    # Skip workflow for releases that are neither pre-release nor latest
+    if: >-
+      github.event_name != 'release' ||
+      github.event.release.prerelease == true ||
+      github.event.action == 'released' ||
+      (github.event.action == 'published' && github.event.release.prerelease == false)
 
     outputs:
       default-true: ${{ steps.cast.outputs.default-true }}
